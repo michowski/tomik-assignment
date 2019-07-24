@@ -20,8 +20,15 @@ export interface RepositoryOwner {
 
 export type SortOrder = "asc" | "desc";
 
+export type RepositoriesSortBy = "stars" | "updated";
+
+export type UpdateRepositoriesSorting = (
+  sortBy: RepositoriesSortBy,
+  sortOrder: SortOrder
+) => void;
+
 export interface FetchRepositoriesParams {
-  sortBy: "name" | "updated";
+  sortBy: RepositoriesSortBy;
   sortOrder: SortOrder;
   page: number;
 }

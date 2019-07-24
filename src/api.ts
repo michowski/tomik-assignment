@@ -1,10 +1,15 @@
 import axios from "axios";
 
-import { FetchRepositoriesParams, SortOrder, Repository } from "./types";
+import {
+  FetchRepositoriesParams,
+  SortOrder,
+  Repository,
+  RepositoriesSortBy
+} from "./types";
 
 export interface FetchRepositoriesApiParams {
   q: string;
-  sort: FetchRepositoriesParams["sortBy"];
+  sort: RepositoriesSortBy;
   order: SortOrder;
   page?: number;
   per_page?: number;

@@ -1,7 +1,13 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
 import Searchbar from "./Searchbar";
 import Repositories from "./Repositories";
-import { Repository, FetchRepositoriesParams, AjaxStatus } from "./types";
+import {
+  Repository,
+  FetchRepositoriesParams,
+  AjaxStatus,
+  RepositoriesSortBy,
+  SortOrder
+} from "./types";
 import { fetchRepositories } from "./api";
 
 const INIT_QUERY = "tonik";
@@ -57,13 +63,31 @@ const RepositoriesContainer: FC = () => {
     []
   );
 
+  const updateSorting = useCallback(
+    (sortBy: RepositoriesSortBy, sortOrder: SortOrder) => {
+      setState(state => ({
+        ...state,
+        queryParams: {
+          ...state.queryParams,
+          sortBy,
+          sortOrder
+        }
+      }));
+    },
+    []
+  );
+
   return (
     <div>
       <header>
         <Searchbar initQuery={INIT_QUERY} onUpdate={setQuery} />
         Results for query: <code>{query}</code>
       </header>
-      <Repositories repositories={repositories} />
+      <Repositories
+        repositories={repositories}
+        queryParams={queryParams}
+        updateSorting={updateSorting}
+      />
     </div>
   );
 };

@@ -7,7 +7,7 @@ export interface Props {
 
 const PAGE_SIZES = [25, 50, 75, 100];
 
-const Pagination: FC<Props> = ({ pageSize, setPageSize }) => {
+const PageSize: FC<Props> = ({ pageSize, setPageSize }) => {
   // useCallback, so that the same function ref is passed forever to <select/>
   const onChange: FormEventHandler<HTMLSelectElement> = useCallback(e => {
     setPageSize(+e.currentTarget.value);
@@ -22,4 +22,4 @@ const Pagination: FC<Props> = ({ pageSize, setPageSize }) => {
   );
 };
 
-export default Pagination;
+export default PageSize;

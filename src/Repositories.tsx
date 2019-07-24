@@ -1,13 +1,25 @@
 import React, { FC, useState } from "react";
-import { Repository } from "./types";
+import {
+  Repository,
+  FetchRepositoriesParams,
+  RepositoriesSortBy,
+  UpdateRepositoriesSorting
+} from "./types";
 import RepositoriesRow from "./RepositoriesRow";
-import Pagination from "./Pagination";
+import PageSize from "./PageSize";
+import RepositoriesColumnHeader from "./RepositoriesColumnHeader";
 
 export interface Props {
   repositories: Repository[];
+  queryParams: FetchRepositoriesParams;
+  updateSorting: UpdateRepositoriesSorting;
 }
 
-const Repositories: FC<Props> = ({ repositories }) => {
+const Repositories: FC<Props> = ({
+  repositories,
+  queryParams,
+  updateSorting
+}) => {
   const [pageSize, setPageSize] = useState(100);
 
   return (
@@ -15,10 +27,26 @@ const Repositories: FC<Props> = ({ repositories }) => {
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Owner</th>
-            <th>Stars</th>
-            <th>Updated at</th>
+            <RepositoriesColumnHeader queryParams={queryParams}>
+              Name
+            </RepositoriesColumnHeader>
+            <RepositoriesColumnHeader queryParams={queryParams}>
+              Owner
+            </RepositoriesColumnHeader>
+            <RepositoriesColumnHeader
+              queryParams={queryParams}
+              sortBy="stars"
+              updateSorting={updateSorting}
+            >
+              Stars
+            </RepositoriesColumnHeader>
+            <RepositoriesColumnHeader
+              queryParams={queryParams}
+              sortBy="updated"
+              updateSorting={updateSorting}
+            >
+              Updated at
+            </RepositoriesColumnHeader>
           </tr>
         </thead>
         <tbody>
@@ -30,7 +58,7 @@ const Repositories: FC<Props> = ({ repositories }) => {
         </tbody>
       </table>
 
-      <Pagination pageSize={pageSize} setPageSize={setPageSize} />
+      <PageSize pageSize={pageSize} setPageSize={setPageSize} />
     </>
   );
 };
