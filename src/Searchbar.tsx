@@ -8,14 +8,15 @@ import React, {
 } from "react";
 
 export interface Props {
+  initQuery: string;
   onUpdate: (query: string) => void;
 }
 
 const DEBOUNCE_TIME = 500;
 
-const Searchbar: FC<Props> = ({ onUpdate }) => {
-  const [query, setQuery] = useState("tonik");
-  const lastInputTime = useRef();
+const Searchbar: FC<Props> = ({ initQuery, onUpdate }) => {
+  const [query, setQuery] = useState(initQuery);
+  const debounceTimeout = useRef<NodeJS.Timeout>();
 
   // useCallback, so that the same function ref is passed forever to <input/>
   const onChange: ChangeEventHandler<HTMLInputElement> = useCallback(e => {
@@ -24,14 +25,11 @@ const Searchbar: FC<Props> = ({ onUpdate }) => {
 
   // Debounce the `onUpdate` callback
   useEffect(() => {
-    const prevTime = lastInputTime.current;
-
-    // Too early to submit a new value
-    if (prevTime != null && new Date().getTime() - prevTime < DEBOUNCE_TIME) {
-      return;
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
     }
 
-    onUpdate(query);
+    debounceTimeout.current = setTimeout(() => onUpdate(query), DEBOUNCE_TIME);
   }, [query]);
 
   return (
