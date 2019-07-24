@@ -10,6 +10,7 @@ import {
 } from "./types";
 import { fetchRepositories } from "./api";
 import SearchStatus from "./SearchStatus";
+import RepositoriesUrlHistory from "./RepositoriesUrlHistory";
 
 const INIT_QUERY = "tonik";
 const INIT_QUERY_PARAMS: FetchRepositoriesParams = {
@@ -90,8 +91,24 @@ const RepositoriesContainer: FC = () => {
     []
   );
 
+  const setStateFromHistory = useCallback(
+    (query: string, queryParams: FetchRepositoriesParams) => {
+      setState(state => ({
+        ...state,
+        query,
+        queryParams
+      }));
+    },
+    []
+  );
+
   return (
     <div>
+      <RepositoriesUrlHistory
+        query={query}
+        queryParams={queryParams}
+        setStateFromHistory={setStateFromHistory}
+      />
       <Searchbar initQuery={INIT_QUERY} onUpdate={setQuery} />
       {query.length > 0 && (
         <>
