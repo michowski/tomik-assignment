@@ -26,7 +26,7 @@ const Searchbar: FC<Props> = ({ onUpdate }) => {
   useEffect(() => {
     const prevTime = lastInputTime.current;
 
-    // To early to submit a new value
+    // Too early to submit a new value
     if (prevTime != null && new Date().getTime() - prevTime < DEBOUNCE_TIME) {
       return;
     }
