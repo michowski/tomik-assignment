@@ -1,0 +1,8 @@
+.SearchStatus {
+  margin-top: 16px;
+}
+
+.SearchStatus var {
+  font-style: normal;
+  font-weight: bold;
+}

@@ -1,0 +1,8 @@
+.Searchbar {
+  width: 100%;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 1.25rem;
+  border: 1px solid black;
+  background: white;
+}

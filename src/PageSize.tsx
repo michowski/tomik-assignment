@@ -1,4 +1,5 @@
 import React, { FC, useCallback, FormEventHandler } from "react";
+import "./PageSize.css";
 
 export interface Props {
   pageSize: number;
@@ -14,11 +15,14 @@ const PageSize: FC<Props> = ({ pageSize, setPageSize }) => {
   }, []);
 
   return (
-    <select value={pageSize} onChange={onChange}>
-      {PAGE_SIZES.map(size => (
-        <option value={size}>{size}</option>
-      ))}
-    </select>
+    <div className="PageSize">
+      <span>Items per page:</span>
+      <select value={pageSize} onChange={onChange}>
+        {PAGE_SIZES.map(size => (
+          <option value={size}>{size}</option>
+        ))}
+      </select>
+    </div>
   );
 };
 

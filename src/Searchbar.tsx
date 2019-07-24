@@ -7,6 +7,8 @@ import React, {
   useRef
 } from "react";
 
+import "./Searchbar.css";
+
 export interface Props {
   initQuery: string;
   onUpdate: (query: string) => void;
@@ -33,9 +35,12 @@ const Searchbar: FC<Props> = ({ initQuery, onUpdate }) => {
   }, [query]);
 
   return (
-    <div>
-      <input className="Searchbar" value={query} onChange={onChange} />
-    </div>
+    <input
+      className="Searchbar"
+      placeholder="Enter your query..."
+      value={query}
+      onChange={onChange}
+    />
   );
 };
 

@@ -10,6 +10,7 @@ export interface Props {
   updateSorting?: UpdateRepositoriesSorting;
   sortBy?: RepositoriesSortBy;
 
+  width?: number;
   queryParams: FetchRepositoriesParams;
 }
 
@@ -19,6 +20,7 @@ const RepositoriesColumnHeader: FC<Props> = ({
   sortBy,
   queryParams,
   updateSorting,
+  width,
   children
 }) => {
   const sortedByMe = queryParams.sortBy === sortBy;
@@ -40,10 +42,10 @@ const RepositoriesColumnHeader: FC<Props> = ({
     });
 
   return (
-    <th onClick={onClick}>
+    <th onClick={onClick} style={{ width }} className={onClick && "sortable"}>
       {children}
 
-      {sortedByMe && (queryParams.sortOrder === "asc" ? "⬇" : "⬆")}
+      {sortedByMe && <span>{queryParams.sortOrder === "asc" ? "⬇" : "⬆"}</span>}
     </th>
   );
 };

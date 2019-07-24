@@ -1,0 +1,9 @@
+.RepositoriesRow_stars {
+  font-weight: bold;
+}
+
+.RepositoriesRow_star {
+  color: goldenrod;
+  margin-right: 8px;
+  font-family: monospace inherit;
+}

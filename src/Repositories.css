@@ -1,0 +1,24 @@
+.Repositories {
+  margin-top: 16px;
+  width: 100%;
+  border-spacing: 0;
+  border: 1px solid #ccc;
+}
+
+.Repositories td, .Repositories th {
+  padding: 8px;
+  text-align: left;
+  background: white;
+}
+
+.Repositories th {
+  background: #e5e5e5;
+}
+
+.Repositories th.sortable {
+  cursor: pointer;
+}
+
+.Repositories th>span {
+  margin-left: 8px;
+}

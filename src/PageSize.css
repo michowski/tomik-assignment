@@ -1,0 +1,9 @@
+.PageSize {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.PageSize span {
+  margin-right: 10px;
+}

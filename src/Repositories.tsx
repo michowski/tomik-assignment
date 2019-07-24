@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+
 import {
   Repository,
   FetchRepositoriesParams,
@@ -8,6 +9,7 @@ import {
 import RepositoriesRow from "./RepositoriesRow";
 import PageSize from "./PageSize";
 import RepositoriesColumnHeader from "./RepositoriesColumnHeader";
+import "./Repositories.css";
 
 export interface Props {
   repositories: Repository[];
@@ -20,23 +22,24 @@ const Repositories: FC<Props> = ({
   queryParams,
   updateSorting
 }) => {
-  const [pageSize, setPageSize] = useState(100);
+  const [pageSize, setPageSize] = useState(25);
 
   return (
     <>
-      <table>
+      <table className="Repositories">
         <thead>
           <tr>
-            <RepositoriesColumnHeader queryParams={queryParams}>
+            <RepositoriesColumnHeader queryParams={queryParams} width={200}>
               Name
             </RepositoriesColumnHeader>
-            <RepositoriesColumnHeader queryParams={queryParams}>
+            <RepositoriesColumnHeader queryParams={queryParams} width={100}>
               Owner
             </RepositoriesColumnHeader>
             <RepositoriesColumnHeader
               queryParams={queryParams}
               sortBy="stars"
               updateSorting={updateSorting}
+              width={100}
             >
               Stars
             </RepositoriesColumnHeader>

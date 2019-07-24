@@ -9,6 +9,7 @@ import {
   SortOrder
 } from "./types";
 import { fetchRepositories } from "./api";
+import SearchStatus from "./SearchStatus";
 
 const INIT_QUERY = "tonik";
 const INIT_QUERY_PARAMS: FetchRepositoriesParams = {
@@ -22,31 +23,41 @@ export interface State {
   queryParams: FetchRepositoriesParams;
   status: AjaxStatus;
   repositories: Repository[];
+  totalCount: number;
 }
 
 const initState: State = {
   query: INIT_QUERY,
   queryParams: INIT_QUERY_PARAMS,
   status: AjaxStatus.Idle,
-  repositories: []
+  repositories: [],
+  totalCount: 0
 };
 
 /* The main container responsible for the state, logic and rendering of results */
 const RepositoriesContainer: FC = () => {
   const [state, setState] = useState(initState);
 
-  const { query, queryParams, status, repositories } = state;
+  const { query, queryParams, status, repositories, totalCount } = state;
 
   // Make an API call anytime the query or query params change
   useEffect(() => {
-    setState(state => ({ ...state, status: AjaxStatus.Loading }));
+    if (!query.length) {
+      return;
+    }
+
+    setState(state => ({
+      ...state,
+      status: AjaxStatus.Loading
+    }));
 
     fetchRepositories(query, queryParams)
       .then(({ data }) => {
         setState(state => ({
           ...state,
           status: AjaxStatus.Idle,
-          repositories: data.items
+          repositories: data.items,
+          totalCount: data.total_count
         }));
       })
       .catch(() => {
@@ -59,7 +70,8 @@ const RepositoriesContainer: FC = () => {
   }, [query, queryParams]);
 
   const setQuery = useCallback(
-    (query: string) => setState(state => ({ ...state, query })),
+    (query: string) =>
+      setState(state => ({ ...state, query, status: AjaxStatus.Loading })),
     []
   );
 
@@ -70,7 +82,8 @@ const RepositoriesContainer: FC = () => {
         queryParams: {
           ...state.queryParams,
           sortBy,
-          sortOrder
+          sortOrder,
+          page: 1
         }
       }));
     },
@@ -79,15 +92,17 @@ const RepositoriesContainer: FC = () => {
 
   return (
     <div>
-      <header>
-        <Searchbar initQuery={INIT_QUERY} onUpdate={setQuery} />
-        Results for query: <code>{query}</code>
-      </header>
-      <Repositories
-        repositories={repositories}
-        queryParams={queryParams}
-        updateSorting={updateSorting}
-      />
+      <Searchbar initQuery={INIT_QUERY} onUpdate={setQuery} />
+      {query.length > 0 && (
+        <>
+          <SearchStatus query={query} status={status} totalCount={totalCount} />
+          <Repositories
+            repositories={repositories}
+            queryParams={queryParams}
+            updateSorting={updateSorting}
+          />
+        </>
+      )}
     </div>
   );
 };
