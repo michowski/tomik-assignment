@@ -7,3 +7,19 @@
   margin-right: 8px;
   font-family: monospace inherit;
 }
+
+.RepositoriesRow_owner {
+  display: flex;
+  align-items: center;
+}
+
+.RepositoriesRow_ownerImg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.RepositoriesRow_date {
+  color: #333;
+}

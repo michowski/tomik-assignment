@@ -6,6 +6,7 @@ export interface Repository {
   name: string;
   stargazers_count: number;
   owner: RepositoryOwner;
+  html_url: string;
   created_at: string;
   updated_at: string;
 }
@@ -14,7 +15,7 @@ export interface Repository {
 export interface RepositoryOwner {
   id: number;
   login: string;
-  url: string;
+  html_url: string;
   avatar_url: string;
 }
 

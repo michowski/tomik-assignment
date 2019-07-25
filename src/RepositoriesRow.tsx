@@ -7,7 +7,7 @@ export interface Props {
   repository: Repository;
 }
 
-// Poor man's date formatting, never do it :)
+// Poor man's date formatting, for localised apps it would be something like moment.js
 const formatDate = (date: string) => {
   const parts = date.split("T");
 
@@ -15,19 +15,28 @@ const formatDate = (date: string) => {
 };
 
 const RepositoriesRow: FC<Props> = ({ repository }) => {
-  const { name, owner, stargazers_count, updated_at } = repository;
+  const { name, html_url, owner, stargazers_count, updated_at } = repository;
 
   return (
     <tr className="RepositoriesRow">
-      <td>{name}</td>
       <td>
-        <a href={owner.url}>{owner.login}</a>
+        <a href={html_url}>{name}</a>
+      </td>
+      <td>
+        <a className="RepositoriesRow_owner" href={owner.html_url}>
+          <img
+            className="RepositoriesRow_ownerImg"
+            src={owner.avatar_url}
+            alt={owner.login}
+          />
+          {owner.login}
+        </a>
       </td>
       <td className="RepositoriesRow_stars">
         <span className="RepositoriesRow_star">★</span>
         {stargazers_count}
       </td>
-      <td>{formatDate(updated_at)}</td>
+      <td className="RepositoriesRow_date">{formatDate(updated_at)}</td>
     </tr>
   );
 };
