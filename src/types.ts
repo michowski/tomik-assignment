@@ -28,6 +28,7 @@ export type UpdateRepositoriesSorting = (
 ) => void;
 
 export interface FetchRepositoriesParams {
+  query: string;
   sortBy: RepositoriesSortBy;
   sortOrder: SortOrder;
   page: number;

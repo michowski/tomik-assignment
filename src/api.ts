@@ -21,11 +21,8 @@ export interface FetchRepositoriesApiResponse {
   items: Repository[];
 }
 
-export const fetchRepositories = (
-  query: string,
-  queryParams: FetchRepositoriesParams
-) => {
-  const { page, sortBy, sortOrder } = queryParams;
+export const fetchRepositories = (queryParams: FetchRepositoriesParams) => {
+  const { query, page, sortBy, sortOrder } = queryParams;
 
   const params: FetchRepositoriesApiParams = {
     q: query,

@@ -3,7 +3,6 @@ import React, { FC, useState } from "react";
 import {
   Repository,
   FetchRepositoriesParams,
-  RepositoriesSortBy,
   UpdateRepositoriesSorting
 } from "./types";
 import RepositoriesRow from "./RepositoriesRow";
@@ -22,7 +21,7 @@ const Repositories: FC<Props> = ({
   queryParams,
   updateSorting
 }) => {
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(100);
 
   return (
     <>

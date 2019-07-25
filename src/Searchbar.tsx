@@ -1,6 +1,5 @@
 import React, {
   FC,
-  useState,
   ChangeEventHandler,
   useEffect,
   useCallback,
@@ -10,36 +9,39 @@ import React, {
 import "./Searchbar.css";
 
 export interface Props {
-  initQuery: string;
-  onUpdate: (query: string) => void;
+  value: string;
+  onChange: (query: string) => void;
+  onSubmit: (query: string) => void;
 }
 
 const DEBOUNCE_TIME = 500;
 
-const Searchbar: FC<Props> = ({ initQuery, onUpdate }) => {
-  const [query, setQuery] = useState(initQuery);
+const Searchbar: FC<Props> = ({ value, onChange, onSubmit }) => {
   const debounceTimeout = useRef<NodeJS.Timeout>();
 
   // useCallback, so that the same function ref is passed forever to <input/>
-  const onChange: ChangeEventHandler<HTMLInputElement> = useCallback(e => {
-    setQuery(e.currentTarget.value);
-  }, []);
+  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
+    e => {
+      onChange(e.currentTarget.value);
+    },
+    [onChange]
+  );
 
-  // Debounce the `onUpdate` callback
+  // Debounce the `onSubmit` callback
   useEffect(() => {
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
 
-    debounceTimeout.current = setTimeout(() => onUpdate(query), DEBOUNCE_TIME);
-  }, [query]);
+    debounceTimeout.current = setTimeout(() => onSubmit(value), DEBOUNCE_TIME);
+  }, [value, onSubmit]);
 
   return (
     <input
       className="Searchbar"
       placeholder="Enter your query..."
-      value={query}
-      onChange={onChange}
+      value={value}
+      onChange={onChangeHandler}
     />
   );
 };

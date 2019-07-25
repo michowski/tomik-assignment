@@ -14,36 +14,51 @@ import RepositoriesUrlHistory from "./RepositoriesUrlHistory";
 
 const INIT_QUERY = "tonik";
 const INIT_QUERY_PARAMS: FetchRepositoriesParams = {
+  query: INIT_QUERY,
   sortBy: "updated",
   sortOrder: "desc",
   page: 1
 };
 
 export interface State {
-  query: string;
   queryParams: FetchRepositoriesParams;
+  queryInput: string;
   status: AjaxStatus;
   repositories: Repository[];
   totalCount: number;
 }
 
-const initState: State = {
-  query: INIT_QUERY,
-  queryParams: INIT_QUERY_PARAMS,
-  status: AjaxStatus.Idle,
-  repositories: [],
-  totalCount: 0
+const initState = (): State => {
+  const url = new URLSearchParams(window.location.search);
+
+  const query = url.get("q");
+  const initQueryParams = query
+    ? {
+        query,
+        page: +(url.get("page") as string),
+        sortBy: url.get("sortBy") as RepositoriesSortBy,
+        sortOrder: url.get("sortOrder") as SortOrder
+      }
+    : INIT_QUERY_PARAMS;
+
+  return {
+    queryParams: initQueryParams,
+    queryInput: initQueryParams.query,
+    status: AjaxStatus.Idle,
+    repositories: [],
+    totalCount: 0
+  };
 };
 
 /* The main container responsible for the state, logic and rendering of results */
 const RepositoriesContainer: FC = () => {
   const [state, setState] = useState(initState);
 
-  const { query, queryParams, status, repositories, totalCount } = state;
+  const { queryParams, queryInput, status, repositories, totalCount } = state;
 
-  // Make an API call anytime the query or query params change
+  // Make an API call anytime the query params change
   useEffect(() => {
-    if (!query.length) {
+    if (!queryParams.query.length) {
       return;
     }
 
@@ -52,7 +67,7 @@ const RepositoriesContainer: FC = () => {
       status: AjaxStatus.Loading
     }));
 
-    fetchRepositories(query, queryParams)
+    fetchRepositories(queryParams)
       .then(({ data }) => {
         setState(state => ({
           ...state,
@@ -68,11 +83,43 @@ const RepositoriesContainer: FC = () => {
           repositories: []
         }));
       });
-  }, [query, queryParams]);
+  }, [queryParams]);
 
-  const setQuery = useCallback(
+  const submitQuery = useCallback(
     (query: string) =>
-      setState(state => ({ ...state, query, status: AjaxStatus.Loading })),
+      // Prevent state modification when query doesn't change
+      setState(state =>
+        query === state.queryParams.query
+          ? state
+          : {
+              ...state,
+              status: AjaxStatus.Loading,
+              queryParams: {
+                ...state.queryParams,
+                query
+              }
+            }
+      ),
+    []
+  );
+
+  const updateQueryInput = useCallback(
+    (queryInput: string) =>
+      setState(state => ({
+        ...state,
+        queryInput
+      })),
+    []
+  );
+
+  const updateQueryParams = useCallback(
+    (queryParams: FetchRepositoriesParams) => {
+      setState(state => ({
+        ...state,
+        queryParams,
+        queryInput: queryParams.query
+      }));
+    },
     []
   );
 
@@ -91,28 +138,24 @@ const RepositoriesContainer: FC = () => {
     []
   );
 
-  const setStateFromHistory = useCallback(
-    (query: string, queryParams: FetchRepositoriesParams) => {
-      setState(state => ({
-        ...state,
-        query,
-        queryParams
-      }));
-    },
-    []
-  );
-
   return (
     <div>
       <RepositoriesUrlHistory
-        query={query}
         queryParams={queryParams}
-        setStateFromHistory={setStateFromHistory}
+        updateQueryParams={updateQueryParams}
       />
-      <Searchbar initQuery={INIT_QUERY} onUpdate={setQuery} />
-      {query.length > 0 && (
+      <Searchbar
+        value={queryInput}
+        onChange={updateQueryInput}
+        onSubmit={submitQuery}
+      />
+      {queryInput.length > 0 && (
         <>
-          <SearchStatus query={query} status={status} totalCount={totalCount} />
+          <SearchStatus
+            query={queryInput}
+            status={status}
+            totalCount={totalCount}
+          />
           <Repositories
             repositories={repositories}
             queryParams={queryParams}

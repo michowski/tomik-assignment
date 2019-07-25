@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import logo from "./logo.svg";
+import React, { FC } from "react";
+
 import "./App.css";
 import RepositoriesContainer from "./RepositoriesContainer";
 

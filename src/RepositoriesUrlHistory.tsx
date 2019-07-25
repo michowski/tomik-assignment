@@ -1,75 +1,59 @@
-import React, { FC, useRef, useEffect } from "react";
+import { FC, useRef, useEffect } from "react";
 import { FetchRepositoriesParams } from "./types";
 
 export interface Props {
-  query: string;
   queryParams: FetchRepositoriesParams;
-  setStateFromHistory: (
-    query: string,
-    queryParams: FetchRepositoriesParams
-  ) => void;
+  updateQueryParams: (queryParams: FetchRepositoriesParams) => void;
 }
 
 const RepositoriesUrlHistory: FC<Props> = ({
-  query,
   queryParams,
-  setStateFromHistory
+  updateQueryParams
 }) => {
-  // Initially, we only want to replace state
-  const wasReplaceStateCalled = useRef(false);
+  // Initially, we want to call replaceState instead of pushState
+  const wasInitialReplaceStatePerformed = useRef(false);
+
+  // We have to distinguish between normal queryParams changes and popState events
+  const wasPopStateJustPerformed = useRef(false);
 
   // Listen to popState events for the past states
   useEffect(() => {
     const listener = (e: PopStateEvent) => {
-      const query = e.state["query"] as string;
-      const queryParams = e.state["queryParams"] as FetchRepositoriesParams;
+      const queryParams = e.state as FetchRepositoriesParams;
 
-      setStateFromHistory(query, queryParams);
+      wasPopStateJustPerformed.current = true;
+
+      updateQueryParams(queryParams);
     };
 
     window.addEventListener("popstate", listener);
 
     return () => window.removeEventListener("popstate", listener);
-  }, [setStateFromHistory]);
+  }, [updateQueryParams]);
 
   // Anytime query params change:
   useEffect(() => {
-    // Read the initial state, if any
-    if (!wasReplaceStateCalled.current) {
-      const url = new URLSearchParams(window.location.search);
-
-      const query = url.get("q");
-      if (!query) {
-        wasReplaceStateCalled.current = true;
-        return;
-      }
-
-      setStateFromHistory(query, {
-        sortBy: url.get("sortBy"),
-        sortOrder: url.get("sortOrder"),
-        page: url.get("page") || 0
-      } as FetchRepositoriesParams);
+    if (wasPopStateJustPerformed.current) {
+      wasPopStateJustPerformed.current = false;
+      return;
     }
 
     // Update the URL
     window.history[
-      wasReplaceStateCalled.current ? "pushState" : "replaceState"
+      wasInitialReplaceStatePerformed.current ? "pushState" : "replaceState"
     ](
-      {
-        query,
-        queryParams
-      },
+      queryParams,
       document.title,
       new URLSearchParams({
-        q: query,
+        q: queryParams.query,
+        page: String(queryParams.page),
         sortBy: queryParams.sortBy,
-        sortOrder: queryParams.sortOrder,
-        page: String(queryParams.page)
+        sortOrder: queryParams.sortOrder
       }).toString()
     );
 
-    wasReplaceStateCalled.current = true;
-  }, [query, queryParams, setStateFromHistory]);
+    wasInitialReplaceStatePerformed.current = true;
+  }, [queryParams, updateQueryParams]);
 
   return null;
 };

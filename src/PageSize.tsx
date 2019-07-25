@@ -10,9 +10,12 @@ const PAGE_SIZES = [25, 50, 75, 100];
 
 const PageSize: FC<Props> = ({ pageSize, setPageSize }) => {
   // useCallback, so that the same function ref is passed forever to <select/>
-  const onChange: FormEventHandler<HTMLSelectElement> = useCallback(e => {
-    setPageSize(+e.currentTarget.value);
-  }, []);
+  const onChange: FormEventHandler<HTMLSelectElement> = useCallback(
+    e => {
+      setPageSize(+e.currentTarget.value);
+    },
+    [setPageSize]
+  );
 
   return (
     <div className="PageSize">
