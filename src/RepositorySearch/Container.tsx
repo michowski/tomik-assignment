@@ -46,7 +46,7 @@ const Container: FC = () => {
 
   // Cache the results by URL
   // This super-dirty-simple implementation will explode at some point because of RAM
-  // I believe the best approach (aside from HTTP caching) is some bullet-proof TTL/queue solution
+  // I believe the best approach (aside from HTTP caching) would be some well-proven TTL/queue cache solution
   const cache = useRef<RepositoriesCache>({});
 
   const { queryParams, queryInput, status, repositories, totalCount } = state;
@@ -57,7 +57,7 @@ const Container: FC = () => {
       return;
     }
 
-    // Check if we have results cached
+    // Check if we have cached results for that URL
     const url = queryParamsToUrl(queryParams);
     const cacheHit = cache.current[url];
     if (cacheHit) {

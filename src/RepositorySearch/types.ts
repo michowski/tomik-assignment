@@ -7,7 +7,6 @@ export interface Repository {
   stargazers_count: number;
   owner: RepositoryOwner;
   html_url: string;
-  created_at: string;
   updated_at: string;
 }
 
