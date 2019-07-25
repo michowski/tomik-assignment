@@ -14,6 +14,7 @@ import RepositoriesRow from "./RepositoriesRow";
 import ColumnHeader from "./ColumnHeader";
 import { ITEMS_PER_PAGE } from "./constants";
 import "./Repositories.css";
+import { queryParamsToUrl } from "./utils";
 
 export interface Props {
   repositories: Repository[];
@@ -44,7 +45,7 @@ const Repositories: FC<Props> = ({
         currentPage={queryParams.page}
         pageSize={ITEMS_PER_PAGE}
         totalCount={totalCount}
-        urlFormat={() => "?"}
+        urlFormat={page => queryParamsToUrl({ ...queryParams, page })}
         onSelect={updatePage}
       />
       <PageSize pageSize={pageSize} setPageSize={setPageSize} />
