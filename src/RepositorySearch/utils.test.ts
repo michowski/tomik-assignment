@@ -12,14 +12,14 @@ describe("formatDate", () => {
 describe("queryParamsToUrl", () => {
   it("converts queryParams into a proper URL", () => {
     const params: FetchRepositoriesParams = {
-      query: "tonik rocks",
+      query: "tonik test",
       sortBy: "stars",
       sortOrder: "asc",
       page: 3
     };
 
     expect(queryParamsToUrl(params)).toBe(
-      "?q=tonik+rocks&page=3&sortBy=stars&sortOrder=asc"
+      "?q=tonik+test&page=3&sortBy=stars&sortOrder=asc"
     );
   });
 
@@ -37,10 +37,10 @@ describe("queryParamsToUrl", () => {
 
 describe("queryParamsFromUrl", () => {
   it("reads query params from URL", () => {
-    const url = "?q=tonik+rocks&page=3&sortBy=stars&sortOrder=asc";
+    const url = "?q=tonik+test&page=3&sortBy=stars&sortOrder=asc";
 
     const expected: FetchRepositoriesParams = {
-      query: "tonik rocks",
+      query: "tonik test",
       sortBy: "stars",
       sortOrder: "asc",
       page: 3
@@ -60,10 +60,10 @@ describe("queryParamsFromUrl", () => {
   });
 
   it("uses defaults for the missing params", () => {
-    const url = "?q=tonik+rocks&sortBy=stars";
+    const url = "?q=tonik+test&sortBy=stars";
 
     const expected: FetchRepositoriesParams = {
-      query: "tonik rocks",
+      query: "tonik test",
       sortBy: "stars",
       sortOrder: DEFAULT_SORT_ORDER,
       page: 1
