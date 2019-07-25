@@ -1,6 +1,6 @@
 /* ColumnHeader - a column header which, if applicable, is also responsible for sorting logic */
 
-import React, { FC } from "react";
+import React, { FC, KeyboardEventHandler } from "react";
 import {
   FetchRepositoriesParams,
   UpdateRepositoriesSorting,
@@ -42,8 +42,21 @@ const ColumnHeader: FC<Props> = ({
       updateSorting(sortBy, newSortOrder);
     });
 
+  // Enable sorting by pressing enter
+  const onKeyDown: KeyboardEventHandler = e => {
+    if (e.keyCode === 13 && onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <th onClick={onClick} style={{ width }} className={onClick && "sortable"}>
+    <th
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      style={{ width }}
+      className={onClick && "sortable"}
+    >
       {children}
 
       {sortedByMe && <span>{queryParams.sortOrder === "asc" ? "⬇" : "⬆"}</span>}
