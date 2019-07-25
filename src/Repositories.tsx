@@ -23,6 +23,10 @@ const Repositories: FC<Props> = ({
 }) => {
   const [pageSize, setPageSize] = useState(100);
 
+  if (!repositories.length) {
+    return null;
+  }
+
   return (
     <>
       <table className="Repositories">

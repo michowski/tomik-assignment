@@ -35,9 +35,9 @@ const initState = (): State => {
   const initQueryParams = query
     ? {
         query,
-        page: +(url.get("page") as string),
-        sortBy: url.get("sortBy") as RepositoriesSortBy,
-        sortOrder: url.get("sortOrder") as SortOrder
+        page: +(url.get("page") as string) || 0,
+        sortBy: (url.get("sortBy") as RepositoriesSortBy) || "updated",
+        sortOrder: (url.get("sortOrder") as SortOrder) || "desc"
       }
     : INIT_QUERY_PARAMS;
 
@@ -152,7 +152,7 @@ const RepositoriesContainer: FC = () => {
       {queryInput.length > 0 && (
         <>
           <SearchStatus
-            query={queryInput}
+            query={queryParams.query}
             status={status}
             totalCount={totalCount}
           />

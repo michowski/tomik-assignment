@@ -44,12 +44,15 @@ const RepositoriesUrlHistory: FC<Props> = ({
     ](
       queryParams,
       document.title,
-      new URLSearchParams({
-        q: queryParams.query,
-        page: String(queryParams.page),
-        sortBy: queryParams.sortBy,
-        sortOrder: queryParams.sortOrder
-      }).toString()
+      queryParams.query
+        ? "?" +
+            new URLSearchParams({
+              q: queryParams.query,
+              page: String(queryParams.page),
+              sortBy: queryParams.sortBy,
+              sortOrder: queryParams.sortOrder
+            }).toString()
+        : "/"
     );
 
     wasInitialReplaceStatePerformed.current = true;
