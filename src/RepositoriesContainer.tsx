@@ -35,7 +35,7 @@ const initState = (): State => {
   const initQueryParams = query
     ? {
         query,
-        page: +(url.get("page") as string) || 0,
+        page: +(url.get("page") as string) || 1,
         sortBy: (url.get("sortBy") as RepositoriesSortBy) || "updated",
         sortOrder: (url.get("sortOrder") as SortOrder) || "desc"
       }
