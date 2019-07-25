@@ -3,7 +3,8 @@ import React, {
   ChangeEventHandler,
   useEffect,
   useCallback,
-  useRef
+  useRef,
+  FormEventHandler
 } from "react";
 
 import "./Searchbar.css";
@@ -19,12 +20,23 @@ const DEBOUNCE_TIME = 500;
 const Searchbar: FC<Props> = ({ value, onChange, onSubmit }) => {
   const debounceTimeout = useRef<NodeJS.Timeout>();
 
-  // useCallback, so that the same function ref is passed forever to <input/>
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     e => {
       onChange(e.currentTarget.value);
     },
     [onChange]
+  );
+
+  const onSubmitHandler: FormEventHandler<HTMLFormElement> = useCallback(
+    e => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+
+      e.preventDefault();
+      onSubmit(value);
+    },
+    [onSubmit, value]
   );
 
   // Debounce the `onSubmit` callback
@@ -37,12 +49,13 @@ const Searchbar: FC<Props> = ({ value, onChange, onSubmit }) => {
   }, [value, onSubmit]);
 
   return (
-    <input
-      className="Searchbar"
-      placeholder="Enter your query..."
-      value={value}
-      onChange={onChangeHandler}
-    />
+    <form className="Searchbar" onSubmit={onSubmitHandler}>
+      <input
+        placeholder="Enter your query..."
+        value={value}
+        onChange={onChangeHandler}
+      />
+    </form>
   );
 };
 

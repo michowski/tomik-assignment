@@ -44,7 +44,7 @@ const initState = (): State => {
   return {
     queryParams: initQueryParams,
     queryInput: initQueryParams.query,
-    status: AjaxStatus.Idle,
+    status: AjaxStatus.Loading,
     repositories: [],
     totalCount: 0
   };
