@@ -17,6 +17,8 @@ Missing:
 - better UX
 - some additional unit tests
 
+![Screenshot of the app](screenshot.png)
+
 ## How to run
 
 It's been simply bootstrapped with create-react-app. So a standard `yarn && yarn start` to run and `yarn test` to test, etc.
