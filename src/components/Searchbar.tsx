@@ -1,3 +1,5 @@
+/* Searchbar - a one-input form which automatically submits the value after typing is done (debounce) */
+
 import React, {
   FC,
   ChangeEventHandler,

@@ -1,6 +1,8 @@
+/* SearchStatus - universal UX status for any async search interface */
+
 import React, { FC } from "react";
 import "./SearchStatus.css";
-import { AjaxStatus } from "./types";
+import { AjaxStatus } from "../types";
 
 export interface Props {
   query: string;

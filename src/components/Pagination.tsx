@@ -1,3 +1,5 @@
+/* Pagination - add pagination interface to any list of items */
+
 import React, { FC, useCallback, MouseEvent } from "react";
 
 import "./Pagination.css";
@@ -6,11 +8,11 @@ export interface Props {
   currentPage: number;
   totalCount: number;
   pageSize: number;
-  urlFormat: (page: number) => string;
+  urlFormat: (page: number) => string; // Add a URL to each page link! Important for a11y & sometimes SEO
   onSelect: (page: number) => void;
 }
 
-export const PAGES_LIMIT = 10; // Forced by Github
+export const PAGES_LIMIT = 10;
 
 const Pagination: FC<Props> = ({
   currentPage,

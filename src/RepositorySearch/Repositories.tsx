@@ -1,17 +1,19 @@
+/* Repositories - the actual table of results and the navigation coming with them */
+
 import React, { FC, useState } from "react";
 
+import PageSize from "../components/PageSize";
+import Pagination from "../components/Pagination";
+import { AjaxStatus } from "../types";
 import {
   Repository,
   FetchRepositoriesParams,
-  UpdateRepositoriesSorting,
-  AjaxStatus
+  UpdateRepositoriesSorting
 } from "./types";
 import RepositoriesRow from "./RepositoriesRow";
-import PageSize from "./PageSize";
-import RepositoriesColumnHeader from "./RepositoriesColumnHeader";
-import "./Repositories.css";
-import Pagination from "./Pagination";
+import ColumnHeader from "./ColumnHeader";
 import { ITEMS_PER_PAGE } from "./constants";
+import "./Repositories.css";
 
 export interface Props {
   repositories: Repository[];
@@ -60,27 +62,27 @@ const Repositories: FC<Props> = ({
       >
         <thead>
           <tr>
-            <RepositoriesColumnHeader queryParams={queryParams} width={250}>
+            <ColumnHeader queryParams={queryParams} width={250}>
               Name
-            </RepositoriesColumnHeader>
-            <RepositoriesColumnHeader queryParams={queryParams} width={200}>
+            </ColumnHeader>
+            <ColumnHeader queryParams={queryParams} width={200}>
               Owner
-            </RepositoriesColumnHeader>
-            <RepositoriesColumnHeader
+            </ColumnHeader>
+            <ColumnHeader
               queryParams={queryParams}
               sortBy="stars"
               updateSorting={updateSorting}
               width={130}
             >
               Stars
-            </RepositoriesColumnHeader>
-            <RepositoriesColumnHeader
+            </ColumnHeader>
+            <ColumnHeader
               queryParams={queryParams}
               sortBy="updated"
               updateSorting={updateSorting}
             >
               Updated at
-            </RepositoriesColumnHeader>
+            </ColumnHeader>
           </tr>
         </thead>
         <tbody>

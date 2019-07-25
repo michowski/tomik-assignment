@@ -1,18 +1,14 @@
+/* RepositoriesRow - simply, one row per each repository in the table */
+
 import React, { FC } from "react";
 
 import { Repository } from "./types";
 import "./RepositoriesRow.css";
+import { formatDate } from "./utils";
 
 export interface Props {
   repository: Repository;
 }
-
-// Poor man's date formatting, for localised apps it would be something like moment.js
-const formatDate = (date: string) => {
-  const parts = date.split("T");
-
-  return parts[0] + " " + parts[1].slice(0, -1);
-};
 
 const RepositoriesRow: FC<Props> = ({ repository }) => {
   const { name, html_url, owner, stargazers_count, updated_at } = repository;

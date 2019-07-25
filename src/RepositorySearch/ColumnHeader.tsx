@@ -1,12 +1,15 @@
+/* ColumnHeader - a column header which, if applicable, is also responsible for sorting logic */
+
 import React, { FC } from "react";
 import {
   FetchRepositoriesParams,
   UpdateRepositoriesSorting,
   RepositoriesSortBy
 } from "./types";
+import { DEFAULT_SORT_ORDER } from "./constants";
 
 export interface Props {
-  /* Not all fields are sortable :( . For those, we simply don't pass these 2 props */
+  /* Not all of the fields are sortable :( . For those, we simply don't pass these 2 props */
   updateSorting?: UpdateRepositoriesSorting;
   sortBy?: RepositoriesSortBy;
 
@@ -14,9 +17,7 @@ export interface Props {
   queryParams: FetchRepositoriesParams;
 }
 
-const DEFAULT_SORT_ORDER = "desc";
-
-const RepositoriesColumnHeader: FC<Props> = ({
+const ColumnHeader: FC<Props> = ({
   sortBy,
   queryParams,
   updateSorting,
@@ -50,4 +51,4 @@ const RepositoriesColumnHeader: FC<Props> = ({
   );
 };
 
-export default RepositoriesColumnHeader;
+export default ColumnHeader;

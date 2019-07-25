@@ -1,17 +1,20 @@
+/* The main container responsible for the state and logic of the feature */
+
 import React, { FC, useState, useEffect, useCallback } from "react";
-import Searchbar from "./Searchbar";
+
 import Repositories from "./Repositories";
 import {
   Repository,
   FetchRepositoriesParams,
-  AjaxStatus,
-  RepositoriesSortBy,
-  SortOrder
+  RepositoriesSortBy
 } from "./types";
 import { fetchRepositories } from "./api";
-import SearchStatus from "./SearchStatus";
-import RepositoriesUrlHistory from "./RepositoriesUrlHistory";
-import { INIT_QUERY_PARAMS, ITEMS_PER_PAGE } from "./constants";
+import { ITEMS_PER_PAGE } from "./constants";
+import { AjaxStatus, SortOrder } from "../types";
+import SearchStatus from "../components/SearchStatus";
+import Searchbar from "../components/Searchbar";
+import StateHistory from "./StateHistory";
+import { queryParamsFromUrl } from "./utils";
 
 export interface State {
   queryParams: FetchRepositoriesParams;
@@ -22,17 +25,7 @@ export interface State {
 }
 
 const initState = (): State => {
-  const url = new URLSearchParams(window.location.search);
-
-  const query = url.get("q");
-  const initQueryParams = query
-    ? {
-        query,
-        page: +(url.get("page") as string) || 1,
-        sortBy: (url.get("sortBy") as RepositoriesSortBy) || "updated",
-        sortOrder: (url.get("sortOrder") as SortOrder) || "desc"
-      }
-    : INIT_QUERY_PARAMS;
+  const initQueryParams = queryParamsFromUrl(window.location.search);
 
   return {
     queryParams: initQueryParams,
@@ -43,8 +36,7 @@ const initState = (): State => {
   };
 };
 
-/* The main container responsible for the state, logic and rendering of results */
-const RepositoriesContainer: FC = () => {
+const Container: FC = () => {
   const [state, setState] = useState(initState);
 
   const { queryParams, queryInput, status, repositories, totalCount } = state;
@@ -144,7 +136,7 @@ const RepositoriesContainer: FC = () => {
 
   return (
     <div>
-      <RepositoriesUrlHistory
+      <StateHistory
         queryParams={queryParams}
         updateQueryParams={updateQueryParams}
       />
@@ -174,4 +166,4 @@ const RepositoriesContainer: FC = () => {
   );
 };
 
-export default RepositoriesContainer;
+export default Container;

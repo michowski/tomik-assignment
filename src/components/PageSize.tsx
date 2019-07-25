@@ -1,3 +1,7 @@
+/* PageSize - selection of the page size */
+
+// TODO: Improve the UX
+
 import React, { FC, useCallback, FormEventHandler } from "react";
 import "./PageSize.css";
 
@@ -19,7 +23,7 @@ const PageSize: FC<Props> = ({ pageSize, setPageSize }) => {
 
   return (
     <div className="PageSize">
-      <span>Limit current results to:</span>
+      <span>Limit the current results to:</span>
       <select value={pageSize} onChange={onChange}>
         {PAGE_SIZES.map(size => (
           <option key={size} value={size}>
