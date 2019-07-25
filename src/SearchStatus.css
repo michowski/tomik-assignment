@@ -1,5 +1,7 @@
 .SearchStatus {
-  margin-top: 16px;
+  margin: 16px 0;
+  font-size: 1.35rem;
+  padding-bottom: 16px;
 }
 
 .SearchStatus var {

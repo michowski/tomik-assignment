@@ -11,14 +11,7 @@ import {
 import { fetchRepositories } from "./api";
 import SearchStatus from "./SearchStatus";
 import RepositoriesUrlHistory from "./RepositoriesUrlHistory";
-
-const INIT_QUERY = "tonik";
-const INIT_QUERY_PARAMS: FetchRepositoriesParams = {
-  query: INIT_QUERY,
-  sortBy: "updated",
-  sortOrder: "desc",
-  page: 1
-};
+import { INIT_QUERY_PARAMS, ITEMS_PER_PAGE } from "./constants";
 
 export interface State {
   queryParams: FetchRepositoriesParams;
@@ -67,7 +60,7 @@ const RepositoriesContainer: FC = () => {
       status: AjaxStatus.Loading
     }));
 
-    fetchRepositories(queryParams)
+    fetchRepositories(queryParams, ITEMS_PER_PAGE)
       .then(({ data }) => {
         setState(state => ({
           ...state,
@@ -96,7 +89,8 @@ const RepositoriesContainer: FC = () => {
               status: AjaxStatus.Loading,
               queryParams: {
                 ...state.queryParams,
-                query
+                query,
+                page: 1
               }
             }
       ),
@@ -138,6 +132,16 @@ const RepositoriesContainer: FC = () => {
     []
   );
 
+  const updatePage = useCallback((page: number) => {
+    setState(state => ({
+      ...state,
+      queryParams: {
+        ...state.queryParams,
+        page
+      }
+    }));
+  }, []);
+
   return (
     <div>
       <RepositoriesUrlHistory
@@ -160,6 +164,9 @@ const RepositoriesContainer: FC = () => {
             repositories={repositories}
             queryParams={queryParams}
             updateSorting={updateSorting}
+            updatePage={updatePage}
+            totalCount={totalCount}
+            status={status}
           />
         </>
       )}

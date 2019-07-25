@@ -19,7 +19,7 @@ const PageSize: FC<Props> = ({ pageSize, setPageSize }) => {
 
   return (
     <div className="PageSize">
-      <span>Items per page:</span>
+      <span>Limit current results to:</span>
       <select value={pageSize} onChange={onChange}>
         {PAGE_SIZES.map(size => (
           <option key={size} value={size}>

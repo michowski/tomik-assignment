@@ -14,7 +14,7 @@ const SearchStatus: FC<Props> = ({ query, status, totalCount }) => {
       {status === AjaxStatus.Fail ? (
         "Whoops, something went wrong!"
       ) : status === AjaxStatus.Loading ? (
-        "Loading..."
+        "Loading results..."
       ) : totalCount === 0 ? (
         <>
           No results found for <code>{query}</code>! Try something else.

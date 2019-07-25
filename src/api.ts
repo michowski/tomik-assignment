@@ -21,14 +21,17 @@ export interface FetchRepositoriesApiResponse {
   items: Repository[];
 }
 
-export const fetchRepositories = (queryParams: FetchRepositoriesParams) => {
+export const fetchRepositories = (
+  queryParams: FetchRepositoriesParams,
+  perPage: number
+) => {
   const { query, page, sortBy, sortOrder } = queryParams;
 
   const params: FetchRepositoriesApiParams = {
     q: query,
     sort: sortBy,
     order: sortOrder,
-    per_page: 100
+    per_page: perPage
   };
 
   // Let's keep the URL as clean as possible

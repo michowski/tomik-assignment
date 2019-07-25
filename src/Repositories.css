@@ -1,24 +1,39 @@
-.Repositories {
-  margin-top: 16px;
+.Repositories_table {
+  margin-top: 8px;
   width: 100%;
   border-spacing: 0;
   border: 1px solid #ccc;
+  table-layout: fixed;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
-.Repositories td, .Repositories th {
+.Repositories_table.loading {
+  opacity: 0.3;
+}
+
+.Repositories_table td, .Repositories_table th {
   padding: 8px;
   text-align: left;
   background: white;
 }
 
-.Repositories th {
+.Repositories_table th {
   background: #e5e5e5;
 }
 
-.Repositories th.sortable {
+.Repositories_table th.sortable {
   cursor: pointer;
 }
 
-.Repositories th>span {
+.Repositories_table th>span {
   margin-left: 8px;
+}
+
+.Repositories_navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.8rem;
 }
