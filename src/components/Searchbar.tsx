@@ -17,16 +17,27 @@ export interface Props {
   onSubmit: (query: string) => void;
 }
 
-const DEBOUNCE_TIME = 500;
+export const DEBOUNCE_TIME = 500;
 
 const Searchbar: FC<Props> = ({ value, onChange, onSubmit }) => {
   const debounceTimeout = useRef<NodeJS.Timeout>();
 
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
     e => {
-      onChange(e.currentTarget.value);
+      const newValue = e.currentTarget.value;
+
+      onChange(newValue);
+
+      // Debounce the `onSubmit` callback
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(
+        () => onSubmit(newValue),
+        DEBOUNCE_TIME
+      );
     },
-    [onChange]
+    [value, onChange, onSubmit]
   );
 
   const onSubmitHandler: FormEventHandler<HTMLFormElement> = useCallback(
@@ -40,15 +51,6 @@ const Searchbar: FC<Props> = ({ value, onChange, onSubmit }) => {
     },
     [onSubmit, value]
   );
-
-  // Debounce the `onSubmit` callback
-  useEffect(() => {
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
-    }
-
-    debounceTimeout.current = setTimeout(() => onSubmit(value), DEBOUNCE_TIME);
-  }, [value, onSubmit]);
 
   return (
     <form className="Searchbar" onSubmit={onSubmitHandler}>
